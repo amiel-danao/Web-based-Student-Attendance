@@ -22,7 +22,8 @@
 									<th class="text-center" width="1%">#</th>
 									<th class="text-center" width="5%">Student</th>
 									<th class="text-center" width="5%">Category</th>
-									<th class="text-center" width="5%">Subject/Quarter</th>
+									<th class="text-center" width="5%">Subject</th>
+									<th class="text-center" width="5%">Quarter</th>
 									<th class="text-center" width="1%">Score 1</th>
 									<th class="text-center" width="1%">Score 2</th>
 									<th class="text-center" width="1%">Score 3</th>
@@ -76,6 +77,8 @@
 												<?php echo ucwords($row['subject']) ?>
 											</b>
 										</p>
+									</td>
+									<td>
 										<small>
 											<b>
 												<?php echo ucwords($row['quarter']) ?>
@@ -152,7 +155,45 @@
 </style>
 <script>
 	$(document).ready(function(){
-		$('table').dataTable()
+		$('table').dataTable({
+			initComplete: function () {
+
+				this.api().columns([1, 2, 3, 4])
+                .every(function () {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                        //.appendTo($(column.footer()).empty())
+						.appendTo( $(column.header()) )
+						.on('change', function () {
+							
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+							console.log(val);
+							//column.search(val ? '^' + val + '$' : '', true, false).draw();
+							column.search(val ? val : '', true, false).draw();
+						});
+
+					$( select ).click( function(e) {
+						e.stopPropagation();
+					});
+
+                    column
+                        .data()
+                        .unique()
+                        .sort()
+						.each(function (d, j) {
+							let cleanValue = d.replace(/<\/?[^>]+(>|$)/g, "").trim();
+                            select.append('<option value="' + cleanValue + '">' + cleanValue + '</option>');
+							
+							console.log(j);
+							//if(column.search() === '^'+cleanValue+'$'){
+							//	select.append( '<option value="'+cleanValue+'" selected="selected">'+cleanValue+'</option>' )
+							//} else {
+							//	select.append( '<option value="'+cleanValue+'">'+cleanValue+'</option>' )
+							//}
+                        });
+                });
+        },
+    });
 	})
 
 	$('#edit_form').submit(function(e){
