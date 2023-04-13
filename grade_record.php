@@ -161,7 +161,7 @@
 				this.api().columns([1, 2, 3, 4])
                 .every(function () {
                     var column = this;
-                    var select = $('<select><option value=""></option></select>')
+                    var select = $('<br><select><option value=""></option></select>')
                         //.appendTo($(column.footer()).empty())
 						.appendTo( $(column.header()) )
 						.on('change', function () {
@@ -183,13 +183,6 @@
 						.each(function (d, j) {
 							let cleanValue = d.replace(/<\/?[^>]+(>|$)/g, "").trim();
                             select.append('<option value="' + cleanValue + '">' + cleanValue + '</option>');
-							
-							console.log(j);
-							//if(column.search() === '^'+cleanValue+'$'){
-							//	select.append( '<option value="'+cleanValue+'" selected="selected">'+cleanValue+'</option>' )
-							//} else {
-							//	select.append( '<option value="'+cleanValue+'">'+cleanValue+'</option>' )
-							//}
                         });
                 });
         },

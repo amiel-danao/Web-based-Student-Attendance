@@ -20,7 +20,6 @@
 
     $sid    = $_ENV['SID'];
     $token  = $_ENV['TOKEN'];
-    $notify_sid = $_ENV['TWILIO_NOTIFY_SID'];
 	$sender = $_ENV['SENDER'];
     $twilio = new Client($sid, $token);
 
